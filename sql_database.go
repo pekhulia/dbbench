@@ -22,6 +22,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math/rand"
+	"strconv"
 	"strings"
 
 	"github.com/go-sql-driver/mysql"
@@ -88,7 +90,7 @@ func (ro *rowOutputter) outputRows(r *sql.Rows) error {
 }
 
 func (s *sqlDb) countQueryRows(w *SafeCSVWriter, q string, args []interface{}) (int64, error) {
-	rows, err := s.db.Query(q, args...)
+	rows, err := s.db.Query(s.prependRandomComment(q), args...)
 	if err != nil {
 		return 0, err
 	}
@@ -127,11 +129,15 @@ func (s *sqlDb) countQueryRows(w *SafeCSVWriter, q string, args []interface{}) (
 }
 
 func (s *sqlDb) countExecRows(q string, args []interface{}) (int64, error) {
-	res, err := s.db.Exec(q, args...)
+	res, err := s.db.Exec(s.prependRandomComment(q), args...)
 	if err != nil {
 		return 0, err
 	}
 	return res.RowsAffected()
+}
+
+func (s *sqlDb) prependRandomComment(q string) string {
+	return "/*Comment to prevent plan reuse " + strconv.Itoa(rand.Int()) + "*/ " + q
 }
 
 func (s *sqlDb) Close() {
