@@ -1,6 +1,8 @@
-module github.com/memsql/dbbench
+module github.com/pekhulia/dbbench
 
 go 1.14
+
+
 
 require (
 	github.com/awreece/goini v0.0.0-20170814002257-6b3ccd8204f1
