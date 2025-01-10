@@ -1,4 +1,4 @@
-module github.com/memsql/dbbench
+module github.com/pekhulia/dbbench
 
 go 1.14
 
