@@ -137,7 +137,11 @@ func (s *sqlDb) countExecRows(q string, args []interface{}) (int64, error) {
 }
 
 func (s *sqlDb) prependRandomComment(q string) string {
-	return "/*Comment to prevent plan reuse " + strconv.Itoa(rand.Int()) + "*/ " + q
+	queryWithComment := "/*Comment to prevent plan reuse " + strconv.Itoa(rand.Int()) + "*/ " + q
+
+	log.Printf("query %v", queryWithComment)
+
+	return queryWithComment
 }
 
 func (s *sqlDb) Close() {
