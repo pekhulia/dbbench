@@ -32,7 +32,7 @@
 #
 common: &common
   # This conforms to Go workspace requirements (we are pre-modules).
-  working_directory: /go/src/github.com/memsql/dbbench
+  working_directory: /go/src/github.com/pekhulia/dbbench
   steps:
     - checkout
     - run:
