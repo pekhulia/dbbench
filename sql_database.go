@@ -36,14 +36,7 @@ type sqlDb struct {
 
 func (s *sqlDb) RunQuery(w *SafeCSVWriter, q string, args []interface{}) (int64, error) {
 
-	switch action := strings.ToLower(strings.Fields(q)[0]); action {
-	case "select", "show", "explain", "describe", "desc":
-		return s.countQueryRows(w, q, args)
-	case "use", "begin":
-		return 0, fmt.Errorf("invalid query action: %v", action)
-	default:
-		return s.countExecRows(q, args)
-	}
+	return s.countExecRows(q, args)
 }
 
 type rowOutputter struct {
@@ -138,8 +131,6 @@ func (s *sqlDb) countExecRows(q string, args []interface{}) (int64, error) {
 
 func (s *sqlDb) prependRandomComment(q string) string {
 	queryWithComment := "/*Comment to prevent plan reuse " + strconv.Itoa(rand.Int()) + "*/ " + q
-
-	log.Printf("query %v", queryWithComment)
 
 	return queryWithComment
 }
